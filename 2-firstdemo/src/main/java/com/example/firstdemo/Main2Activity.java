@@ -38,15 +38,5 @@ public class Main2Activity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
-
-        // Add button click listener for activity 3
-        binding.buttonToMain3Activity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Main2Activity.this, Main3Activity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
