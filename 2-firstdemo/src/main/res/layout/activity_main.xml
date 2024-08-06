@@ -24,16 +24,17 @@
 
     <TextView
         android:id="@+id/received_message"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
-<!--   Add counter UI-->
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
+
+<!--    Add counter UI-->
     <TextView
         android:id="@+id/counterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="end"
         android:layout_margin="16dp"
         android:text="Visits: 0"
         android:textSize="16sp" />

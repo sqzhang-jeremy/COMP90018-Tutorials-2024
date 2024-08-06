@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private TextView counterTextView;
     private int visitCount;
+    private boolean isFirstCreation;
 
     private ActivityMainBinding binding;
 
@@ -105,13 +106,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Add counter
+        // Add Counter
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         counterTextView = findViewById(R.id.counterTextView);
 
-        // Increment visit count
-        visitCount = prefs.getInt("visit_count", 0) + 1;
-        prefs.edit().putInt("visit_count", visitCount).apply();
+        isFirstCreation = savedInstanceState == null;
+        if (isFirstCreation) {
+            // Reset the counter at the start of a new session
+            visitCount = 1;
+            prefs.edit().putInt("visit_count", visitCount).apply();
+        } else {
+            // Load the current count
+            visitCount = prefs.getInt("visit_count", 1);
+        }
 
         updateCounterDisplay();
     }
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /// Add counter
+    // Add counter
     private void updateCounterDisplay() {
         counterTextView.setText("Visits: " + visitCount);
     }
@@ -155,8 +162,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        visitCount = prefs.getInt("visit_count", 0);
-        updateCounterDisplay();
+        if (!isFirstCreation) {
+            // Increment the counter only when returning to MainActivity, not on first creation
+            visitCount = prefs.getInt("visit_count", 1) + 1;
+            prefs.edit().putInt("visit_count", visitCount).apply();
+            updateCounterDisplay();
+        }
+        isFirstCreation = false;
     }
 
     /// Register a callback from the activity result
