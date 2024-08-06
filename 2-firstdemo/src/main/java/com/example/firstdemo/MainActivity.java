@@ -16,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.widget.TextView;
+
 import com.example.firstdemo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "First Demo";
     public static String MESSAGE = "Message";
     public static int MESSAGE_RECEIVED = 1;
+
+
+    // add counter
+    private SharedPreferences prefs;
+    private TextView counterTextView;
+    private int visitCount;
+    private boolean isFirstCreation;
 
     private ActivityMainBinding binding;
 
@@ -93,6 +104,23 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        // Add Counter
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        counterTextView = findViewById(R.id.counterTextView);
+
+        isFirstCreation = savedInstanceState == null;
+        if (isFirstCreation) {
+            // Reset the counter at the start of a new session
+            visitCount = 1;
+            prefs.edit().putInt("visit_count", visitCount).apply();
+        } else {
+            // Load the current count
+            visitCount = prefs.getInt("visit_count", 1);
+        }
+
+        updateCounterDisplay();
     }
 
     public void triggerButtonPressWithIntent()
@@ -123,6 +151,24 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(MESSAGE, "Hello from the first activity");
             startActivityIntent.launch(intent);
         }
+    }
+
+    // Add counter
+    private void updateCounterDisplay() {
+        counterTextView.setText("Visits: " + visitCount);
+    }
+
+    // Make sure to call updateCounterDisplay() in onResume() to refresh the counter when returning from other activities
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isFirstCreation) {
+            // Increment the counter only when returning to MainActivity, not on first creation
+            visitCount = prefs.getInt("visit_count", 1) + 1;
+            prefs.edit().putInt("visit_count", visitCount).apply();
+            updateCounterDisplay();
+        }
+        isFirstCreation = false;
     }
 
     /// Register a callback from the activity result
