@@ -8,11 +8,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.widget.TextView;
+
 import com.example.firstdemo.databinding.ActivityMain2Binding;
 
 public class Main2Activity extends AppCompatActivity {
 
     public static String RECEIVED_MESSAGE = "Received message";
+
+    private SharedPreferences prefs;
+    private TextView counterTextView;
 
     private ActivityMain2Binding binding;
 
@@ -48,5 +55,16 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+        // Add Counter
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        counterTextView = findViewById(R.id.counterTextView);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int visitCount = prefs.getInt("visit_count", 0);
+        counterTextView.setText("Visits: " + visitCount);
     }
 }
