@@ -6,10 +6,10 @@
         android:icon="@drawable/linear_layout_demo"
         android:title="Linear Layout" />
 
-    <item
-        android:id="@+id/navigation_relative"
-        android:icon="@drawable/relative_layout_demo"
-        android:title="Relative Layout" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_relative"-->
+<!--        android:icon="@drawable/relative_layout_demo"-->
+<!--        android:title="Relative Layout" />-->
 
     <item
         android:id="@+id/navigation_list"
@@ -25,5 +25,11 @@
         android:id="@+id/navigation_constraint"
         android:icon="@drawable/bananas"
         android:title="Constraint View" />
+
+    <item
+        android:id="@+id/navigation_grid"
+        android:icon="@drawable/linear_layout_demo"
+        android:title="Grid View" />
+
 
 </menu>

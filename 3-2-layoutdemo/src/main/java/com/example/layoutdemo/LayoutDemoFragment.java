@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.example.layoutdemo.databinding.FragmentLayoutDemoListBinding;
 import com.example.layoutdemo.databinding.FragmentLayoutDemoRecyclerBinding;
+import com.example.layoutdemo.databinding.FragmentLayoutDemoGridBinding;
 
 import java.util.ArrayList;
 
@@ -24,12 +25,14 @@ public class LayoutDemoFragment extends Fragment {
     static int LIST_DEMO = R.layout.fragment_layout_demo_list;
     static int RECYCLER_DEMO = R.layout.fragment_layout_demo_recycler;
     static int CONSTRAINT_DEMO = R.layout.fragment_layout_demo_constraint;
+    static int GRID_DEMO = R.layout.fragment_layout_demo_grid;
     static String LAYOUT_TYPE = "type";
 
     private int layout = R.layout.fragment_layout_demo_linear;
 
     private FragmentLayoutDemoListBinding listBinding;
     private FragmentLayoutDemoRecyclerBinding recyclerBinding;
+    private FragmentLayoutDemoGridBinding gridBinding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +75,22 @@ public class LayoutDemoFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.image_description), Toast.LENGTH_SHORT).show();
             });
             return view;
+        }
+        else if (this.layout == R.layout.fragment_layout_demo_grid) {
+            gridBinding = FragmentLayoutDemoGridBinding.inflate(inflater, container, false);
+
+            OlympicsGridAdapter adapter = new OlympicsGridAdapter(getActivity(), getOlympics());
+            gridBinding.olympicsGridView.setAdapter(adapter);
+
+            gridBinding.olympicsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Olympics olympics = (Olympics) parent.getItemAtPosition(position);
+                    Toast.makeText(getContext(), olympics.getOlympicsSport(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return gridBinding.getRoot();
         }
         else {
             View view = inflater.inflate(layout, container, false);
@@ -120,10 +139,46 @@ public class LayoutDemoFragment extends Fragment {
     private ArrayList<Olympics> getOlympics() {
         ArrayList<Olympics> olympics = new ArrayList<>();
         olympics.add(new Olympics(R.drawable.games, "logo"));
+        olympics.add(new Olympics(R.drawable.games, "logo"));
+        olympics.add(new Olympics(R.drawable.games, "logo"));
+        olympics.add(new Olympics(R.drawable.games, "logo"));
         olympics.add(new Olympics(R.drawable.basketball, "basketball"));
         olympics.add(new Olympics(R.drawable.football, "football"));
         olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
         olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+
         return olympics;
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/olympicsGridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="8dp"
+        android:numColumns="4"
+        android:padding="40dp"
+        android:verticalSpacing="8dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

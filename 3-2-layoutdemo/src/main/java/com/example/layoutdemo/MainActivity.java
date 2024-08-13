@@ -53,16 +53,16 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                     return true;
                 }
-                // To show Relative layout demonstration
-                else if (id == R.id.navigation_relative) {
-                    Fragment relative_layout = LayoutDemoFragment.newInstance(LayoutDemoFragment.RELATIVE_DEMO);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.layout_fragment, relative_layout)
-                            .addToBackStack(null)
-                            .commit();
-                    return true;
-                }
+//                // To show Relative layout demonstration
+//                else if (id == R.id.navigation_relative) {
+//                    Fragment relative_layout = LayoutDemoFragment.newInstance(LayoutDemoFragment.RELATIVE_DEMO);
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.layout_fragment, relative_layout)
+//                            .addToBackStack(null)
+//                            .commit();
+//                    return true;
+//                }
                 // To show List view demonstration
                 else if (id == R.id.navigation_list) {
                     Fragment list_layout = LayoutDemoFragment.newInstance(LayoutDemoFragment.LIST_DEMO);
@@ -89,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.layout_fragment, constraint_layout)
+                            .addToBackStack(null)
+                            .commit();
+                    return true;
+                }
+                else if (id == R.id.navigation_grid) {
+                    Fragment grid_layout = LayoutDemoFragment.newInstance(LayoutDemoFragment.GRID_DEMO);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.layout_fragment, grid_layout)
                             .addToBackStack(null)
                             .commit();
                     return true;
