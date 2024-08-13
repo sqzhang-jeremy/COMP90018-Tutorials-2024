@@ -33,7 +33,7 @@
         </activity>
 
         <activity android:name=".Main3Activity" />
-
+      
     </application>
 
 </manifest>
