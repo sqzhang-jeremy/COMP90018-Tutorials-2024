@@ -21,4 +21,9 @@
         android:icon="@drawable/recycler_view_demo"
         android:title="Recycler View" />
 
+    <item
+        android:id="@+id/navigation_constraint"
+        android:icon="@drawable/bananas"
+        android:title="Constraint View" />
+
 </menu>

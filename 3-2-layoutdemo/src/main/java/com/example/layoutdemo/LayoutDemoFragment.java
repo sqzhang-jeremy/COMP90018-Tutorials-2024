@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.example.layoutdemo.databinding.FragmentLayoutDemoListBinding;
 import com.example.layoutdemo.databinding.FragmentLayoutDemoRecyclerBinding;
@@ -22,6 +23,7 @@ public class LayoutDemoFragment extends Fragment {
     static int RELATIVE_DEMO = R.layout.fragment_layout_demo_relative;
     static int LIST_DEMO = R.layout.fragment_layout_demo_list;
     static int RECYCLER_DEMO = R.layout.fragment_layout_demo_recycler;
+    static int CONSTRAINT_DEMO = R.layout.fragment_layout_demo_constraint;
     static String LAYOUT_TYPE = "type";
 
     private int layout = R.layout.fragment_layout_demo_linear;
@@ -61,6 +63,15 @@ public class LayoutDemoFragment extends Fragment {
             recyclerBinding.demoRecycler.setAdapter(adapter);
 
             return recyclerBinding.getRoot();
+        }
+        else if (this.layout == R.layout.fragment_layout_demo_constraint) {
+            View view = inflater.inflate(R.layout.fragment_layout_demo_constraint, container, false);
+            // Add the click listener for the ImageView here
+            ImageView imageView = view.findViewById(R.id.imageView);
+            imageView.setOnClickListener(v -> {
+                Toast.makeText(getContext(), getString(R.string.image_description), Toast.LENGTH_SHORT).show();
+            });
+            return view;
         }
         else {
             View view = inflater.inflate(layout, container, false);
@@ -102,8 +113,17 @@ public class LayoutDemoFragment extends Fragment {
         fruits.add(new Fruit(R.drawable.pomegranate, "Pomegranate"));
         fruits.add(new Fruit(R.drawable.strawberry, "Strawberry"));
         fruits.add(new Fruit(R.drawable.watermelon, "Watermelon"));
-
         return fruits;
     }
 
+    // To generate an array of fruit example for Grid View Demonstration
+    private ArrayList<Olympics> getOlympics() {
+        ArrayList<Olympics> olympics = new ArrayList<>();
+        olympics.add(new Olympics(R.drawable.games, "logo"));
+        olympics.add(new Olympics(R.drawable.basketball, "basketball"));
+        olympics.add(new Olympics(R.drawable.football, "football"));
+        olympics.add(new Olympics(R.drawable.weightlifting, "weightlifting"));
+        olympics.add(new Olympics(R.drawable.badminton, "badminton"));
+        return olympics;
+    }
 }

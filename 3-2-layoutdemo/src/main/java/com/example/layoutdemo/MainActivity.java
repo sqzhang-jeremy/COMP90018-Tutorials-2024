@@ -83,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                     return true;
                 }
+                // To show Constraint demonstration
+                else if (id == R.id.navigation_constraint) {
+                    Fragment constraint_layout = LayoutDemoFragment.newInstance(LayoutDemoFragment.CONSTRAINT_DEMO);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.layout_fragment, constraint_layout)
+                            .addToBackStack(null)
+                            .commit();
+                    return true;
+                }
+
                 return false;
             }
         });
