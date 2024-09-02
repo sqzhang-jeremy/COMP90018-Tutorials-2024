@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -16,15 +18,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class MyService extends Service {
 
-    public MyService() {
-    }
-
     private NotificationManager notificationManager;
 
     // Example for the Binder
-    private DownloadBinder mBinder = new DownloadBinder();
-
     class DownloadBinder extends Binder {
+        MyService getService() {
+            return MyService.this;
+        }
 
         public void startDownload() {
             Log.d("MyService", "startDownload executed");
@@ -34,14 +34,41 @@ public class MyService extends Service {
             Log.d("MyService", "getProgress executed");
             return 0;
         }
-
     }
+
+
+    private DownloadBinder mBinder = new DownloadBinder();
 
     // Called when Activity perform bindService() method
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
+
+    public void getTemperature(final String city, final TemperatureCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000); // Simulate network delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                final int temperature = (int) (Math.random() * 30 + 10); // Random temp between 10-40°C
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onTemperatureReceived(temperature);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public interface TemperatureCallback {
+        void onTemperatureReceived(int temperature);
+    }
+
 
     @Override
     public void onCreate() {
@@ -87,6 +114,25 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MyService", "onStartCommand executed");
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public void showTemperatureNotification(int temperature) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        Notification notification = new Notification.Builder(getApplicationContext(), MainActivity.id)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_dialog_info))
+                .setChannelId(MainActivity.id)
+                .setContentTitle("Temperature Update")
+                .setContentText("Melbourne is: " + temperature + "°C")
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .setContentIntent(pi)
+                .build();
+
+        notificationManager.notify(2, notification);
     }
 
     //method to process when receiving MessageEvent

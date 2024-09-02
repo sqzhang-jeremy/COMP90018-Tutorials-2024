@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<String[]> rpl;
     private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.POST_NOTIFICATIONS};
 
+    private MyService myService;
     private MyService.DownloadBinder downloadBinder;
     boolean bound = false;
 
@@ -55,15 +56,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             bound = false;
+            myService = null;
+            downloadBinder = null;
         }
 
         // called when connecting to Service
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             downloadBinder = (MyService.DownloadBinder) service;
-            downloadBinder.startDownload();
-            downloadBinder.getProgress();
+            myService = downloadBinder.getService();
+//            downloadBinder.startDownload();
+//            downloadBinder.getProgress();
             bound = true;
+
+            // Once connected, request temperature
+            requestTemperature();
         }
     };
 
@@ -175,6 +182,20 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
+    private void requestTemperature() {
+        if (bound && myService != null) {
+            myService.getTemperature("Melbourne", new MyService.TemperatureCallback() {
+                @Override
+                public void onTemperatureReceived(int temperature) {
+                    Log.d("MainActivity", "Temperature received: " + temperature + "°C");
+                    myService.showTemperatureNotification(temperature);
+                }
+            });
+        } else {
+            Log.e("MainActivity", "Service not bound or null when requesting temperature");
+        }
+    }
+
     /**
      * A reusable method to construct necessary notifications
      */
@@ -199,8 +220,10 @@ public class MainActivity extends AppCompatActivity {
         // Unregister to avoid Android OOM (out-of-memory)
         EventBus.getDefault().unregister(this);
         super.onStop();
-        unbindService(connection);
-        bound = false;
+        if (bound) {
+            unbindService(connection);
+            bound = false;
+        }
     }
 
     //  Method to process when receiving MessageEvent
