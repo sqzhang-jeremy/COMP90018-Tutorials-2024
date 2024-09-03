@@ -16,7 +16,7 @@ public class Barometer implements SensorEventListener
     private SensorManager mSensorManager;
     private Sensor sensor;
 
-
+    // choose the barometer sensor
     private int primarySensor = Sensor.TYPE_PRESSURE;
 
     public Barometer(Context context, TextView sensorLabel)
@@ -24,7 +24,7 @@ public class Barometer implements SensorEventListener
         mContext = context;
         enableSensor(sensorLabel);
     }
-
+    //initialize sensor manager
     public void enableSensor(TextView sensorLabel) {
         Log.v("Sensor...", "Enabling sensor...");
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
@@ -70,6 +70,7 @@ public class Barometer implements SensorEventListener
 
         if (sensorEvent.sensor.getType() == sensor.getType()) {
             Log.v("Sensor...", "Posting value");
+            // EventBus: post events
             EventBus.getDefault().post(new BarometerMessage(sensorEvent.values[0]));
         }
     }

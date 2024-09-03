@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        // create a barometer instance and register for events via EventBus
         barometer = new Barometer(this, sensorLabel);
         EventBus.getDefault().register(this);
     }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         barometer.disableSensor();
         super.onDestroy();
     }
-
+    // EventBus: subscribe to events
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(BarometerMessage event)
     {
