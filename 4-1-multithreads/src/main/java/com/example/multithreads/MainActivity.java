@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     private LocalBroadcastManager localBroadcastManager;
 
+    // counter demo
+    private int buttonAClickCount = 0;
+
     Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         binding.crashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonAClickCount++;
                 updateAfterClick(" A");
                 new Thread(new Runnable() {
                     @Override
@@ -297,8 +301,10 @@ public class MainActivity extends AppCompatActivity {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        elapsedTime = (System.currentTimeMillis() - actionedTime) / 1000;
                         EventBus.getDefault().post(new MessageEvent(
-                                "Message Received from Thread through EventBus after " + elapsedTime + " seconds"));
+                                "Message Received from Thread through EventBus after " + elapsedTime + " seconds",
+                                buttonAClickCount));
                     }
                 }.start();
             }
@@ -321,8 +327,7 @@ public class MainActivity extends AppCompatActivity {
     // The method to process when receiving MessageEvent
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        text.setText(event.message);
+        text.setText(event.message + "\nButton A click count: " + event.clickCount);
     }
-
 }
 
